@@ -2,7 +2,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const http = require('http');
 
-const PORT =  process.nextTick.PORT || 5000;
+const PORT =  process.env.PORT || 5005;
 
 const router = require('./router');
 
@@ -11,7 +11,14 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 io.on('connection',(socket)=>{
-    console.log("hello io");
+
+    console.log("socket.io is ready to accept event");
+
+    socket.on('join',({name,room},callback)=>{
+        console.log(name,room);
+
+        callback({name});
+    });
 
     socket.on(('disconnect'),()=>{
         console.log("connection is no longer ");
